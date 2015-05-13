@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+ <grid table="Declaration">
+        <primary_key>DeclarationGUID</primary_key>
+        <query>SELECT DeclarationGUID, SequenceNum, AcceptanceDate, CommercialRefNum, DeclarantId, DeclarantPostalCode, DeclarantAddressLine1 + DeclarantAddressLine2 AS DeclarantAddress, DeclarantCity, DeclarantRegion, DeclarantCountry FROM Declaration</query>
+             <grid table="GoodsItem">
+                <foreign_key>DeclarationGUID</foreign_key>
+                <primary_key>GoodsItemGUID</primary_key>
+                <query>SELECT DeclarationGUID, GoodsItemGUID, SequenceNum, CommodityCode, NetWeight, GrossWeight, DescriptionOfGoods FROM GoodsItem WHERE DeclarationGUID=@@DeclarationGUID@@</query>
+                     <grid table="GoodsItemGUID">
+                          <foreign_key>DeclarationGUID</foreign_key>
+                          <foreign_key>GoodsItemGUID</foreign_key>
+                          <primary_key>ContainerGUID</primary_key>
+                          <query>SELECT DeclarationGUID, GoodsItemGUID, ContainerGUID, Identifier FROM GoodsItemContainer WHERE GoodsItemGUID=@@GoodsItemGUID@@</query>
+                    </grid>
+            </grid>
+</grid>

@@ -17,7 +17,7 @@
         im.ID = "imid"
 
         Dim mainPanel As Panel = New Panel()
-        mainPanel.Attributes.Add("style", "display:none")
+        'mainPanel.Attributes.Add("style", "display:none")
         Dim g As GridView = Me.createNewGrid()
         Dim pan As Panel = New Panel()
         'pan.Attributes.Add("style", "display:none")
@@ -28,7 +28,7 @@
         'p.Controls.Add(g)
         ''   new   Code   there  5.12.2015  tabs
         Dim tabContainer As AjaxControlToolkit.TabContainer = New AjaxControlToolkit.TabContainer()
-        tabContainer.AutoPostBack = True
+        tabContainer.AutoPostBack = False
         tabContainer.ID = "tabContainerId"
         Dim tabPan1 As AjaxControlToolkit.TabPanel = New AjaxControlToolkit.TabPanel()
         tabPan1.HeaderText = "Header" & Me._level

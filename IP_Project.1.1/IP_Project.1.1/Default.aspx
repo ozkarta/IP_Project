@@ -1,5 +1,7 @@
 ﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="Default.aspx.vb" Inherits="IP_Project._1._1._Default" %>
 
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -14,15 +16,14 @@
 
              if(myObject.src.indexOf("plus.gif")>-1)
              {
-                 //alert("truee");
-                 
                  $(myObject).closest("tr").after("<tr><td></td><td colspan = '100%'>" + $(myObject).next().html() + "</td></tr>");
+                 $(myObject).next().remove();
                  myObject.src = "images/minus.png";
                  return;
              }
              
              if (myObject.src.indexOf("minus.png") > -1) {
-                 //alert("truee");
+                 $(myObject).after("<div style=\"display:none\">" + $(myObject).closest("tr").next().html()+ "</div>")
                  $(myObject).closest("tr").next().remove();
                  myObject.src = "images/plus.gif";
                  return;
@@ -46,5 +47,6 @@
         <hr />
 
     </form>
+   
 </body>
 </html>

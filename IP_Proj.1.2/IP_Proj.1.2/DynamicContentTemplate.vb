@@ -6,6 +6,8 @@ Public Class DynamicContentTemplate
     Dim _level As Integer
 
     Dim grid As GridView
+    Dim helperGridFroHeader As GridView
+
 
     Public Sub New(ByVal gfx As List(Of GridFromXml), ByVal level As Integer)
         Me._gfx = gfx
@@ -18,6 +20,8 @@ Public Class DynamicContentTemplate
 
         grid = Me.createNewGrid()
 
+        Me.helperGridFroHeader = New GridView()
+        Me.helperGridFroHeader.ID = "helpGrid" & (Me._level + 1)
 
 
         Dim saveBut As Button = New Button()
@@ -41,6 +45,7 @@ Public Class DynamicContentTemplate
         tabPan1.HeaderText = "Header"
         tabPan1.ID = "headerId"
         tabPan1.Controls.Add(lab)
+        tabPan1.Controls.Add(helperGridFroHeader)
 
         Dim tabPan2 As AjaxControlToolkit.TabPanel = New AjaxControlToolkit.TabPanel()
         tabPan2.HeaderText = "Grid"
@@ -147,10 +152,46 @@ Public Class DynamicContentTemplate
                 End If
                 'Exit For
             End If
-            'Next
+
+            '_--_--__--__--__--__--__--   Helper Grid DataBinding
+
+            Dim helpGrid As GridView = Nothing
+            Dim headerTab As AjaxControlToolkit.TabPanel = Nothing
+            If Not tabContainer Is Nothing Then
+                headerTab = tabContainer.FindControl("headerId")
+                If Not headerTab Is Nothing Then
+                    helpGrid = headerTab.FindControl("helpGrid" & (Me._level + 2))
+                End If
+            End If
+
+            If Not helpGrid Is Nothing Then
+
+
+                Dim dt As DataTable = New DataTable()
+                Dim g As GridView = CType(sender, GridView)
+                For k As Integer = 1 To g.Columns.Count - 2
+                    dt.Columns.Add(g.Columns(k).HeaderText.ToString())
+                Next
+                Dim dr As DataRow = dt.NewRow()
+                For Each col In dt.Columns
+                    Debug.WriteLine(col.ToString())
+                Next
+                For k As Integer = 0 To dt.Columns.Count - 1
+                    dr(dt.Columns(k)) = e.Row.Cells(k + 1).Text.ToString()
+                Next
+
+                dt.Rows.Add(dr)
+                helpGrid.DataSource = dt
+                helpGrid.AutoGenerateColumns = True
+                helpGrid.DataBind()
+            End If
+
+
+
+
         End If
 
-
+        
 
     End Sub
 

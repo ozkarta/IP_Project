@@ -167,5 +167,40 @@ Public Class _Default
                 subGrid.DataBind()
             End If
         End If
+
+
+        '_--_--__--__--__--__--__--   Helper Grid DataBinding
+
+        Dim helpGrid As GridView = Nothing
+        Dim headerTab As AjaxControlToolkit.TabPanel = Nothing
+        If Not tabContainer Is Nothing Then
+            headerTab = tabContainer.FindControl("headerId")
+            If Not headerTab Is Nothing Then
+                helpGrid = headerTab.FindControl("helpGrid1")
+            End If
+        End If
+
+        If Not helpGrid Is Nothing Then
+
+
+            Dim dt As DataTable = New DataTable()
+            Dim g As GridView = CType(sender, GridView)
+            For i As Integer = 1 To g.Columns.Count - 2
+                dt.Columns.Add(g.Columns(i).HeaderText.ToString())
+            Next
+            Dim dr As DataRow = dt.NewRow()
+            For Each col In dt.Columns
+                Debug.WriteLine(col.ToString())
+            Next
+            For i As Integer = 0 To dt.Columns.Count - 1
+                dr(dt.Columns(i)) = e.Row.Cells(i + 1).Text.ToString()
+            Next
+
+            dt.Rows.Add(dr)
+            helpGrid.DataSource = dt
+            helpGrid.AutoGenerateColumns = True
+            helpGrid.DataBind()
+        End If
+
     End Sub
 End Class

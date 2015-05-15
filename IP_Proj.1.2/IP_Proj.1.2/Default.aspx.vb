@@ -189,9 +189,7 @@ Public Class _Default
                 dt.Columns.Add(g.Columns(i).HeaderText.ToString())
             Next
             Dim dr As DataRow = dt.NewRow()
-            For Each col In dt.Columns
-                Debug.WriteLine(col.ToString())
-            Next
+           
             For i As Integer = 0 To dt.Columns.Count - 1
                 dr(dt.Columns(i)) = e.Row.Cells(i + 1).Text.ToString()
             Next

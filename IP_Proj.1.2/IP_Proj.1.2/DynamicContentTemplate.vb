@@ -28,6 +28,7 @@ Public Class DynamicContentTemplate
         saveBut.Text = "Save"
         saveBut.Visible = True
         saveBut.Enabled = True
+        saveBut.ID = "saveButId" & Me._level
         AddHandler saveBut.Click, AddressOf Me.saveButClick
 
         Dim mainPanel As Panel = New Panel()
@@ -95,6 +96,8 @@ Public Class DynamicContentTemplate
     Protected Sub saveButClick(ByVal sender As Object, ByVal e As EventArgs)
         Debug.WriteLine("Button was clicked")
         Debug.WriteLine(Me._gfx(Me._level).prim_key)
+
+        Debug.WriteLine(helperGridFroHeader.Rows(0).Cells(Me.getColumnIndexByName(helperGridFroHeader.Rows(0), Me._gfx(Me._level).prim_key)).Text)
     End Sub
 
     Public Function getColumnIndexByName(ByVal row As GridViewRow, ByVal columnName As String) As Integer
@@ -173,9 +176,7 @@ Public Class DynamicContentTemplate
                     dt.Columns.Add(g.Columns(k).HeaderText.ToString())
                 Next
                 Dim dr As DataRow = dt.NewRow()
-                For Each col In dt.Columns
-                    Debug.WriteLine(col.ToString())
-                Next
+                
                 For k As Integer = 0 To dt.Columns.Count - 1
                     dr(dt.Columns(k)) = e.Row.Cells(k + 1).Text.ToString()
                 Next

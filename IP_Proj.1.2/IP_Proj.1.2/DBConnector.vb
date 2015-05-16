@@ -2,8 +2,8 @@
 Imports System.Diagnostics
 
 Public Class DBConnector
-    'Private Shared connectionString As String = "Data Source=ozkarta\ozkarta;Initial Catalog=test;Integrated Security=True"
-    Private Shared connectionString As String = "Data Source=.;Initial Catalog=test;Integrated Security=True"
+    Private Shared connectionString As String = "Data Source=ozkarta\ozkarta;Initial Catalog=test;Integrated Security=True"
+    'Private Shared connectionString As String = "Data Source=.;Initial Catalog=test;Integrated Security=True"
 
     Private Shared con As SqlConnection
     Private Shared adapter As SqlDataAdapter

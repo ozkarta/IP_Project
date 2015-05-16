@@ -7,6 +7,7 @@ Public Class DynamicContentTemplate
 
     Dim grid As GridView
     Dim helperGridFroHeader As GridView
+    Dim saveBut As Button
 
 
     Public Sub New(ByVal gfx As List(Of GridFromXml), ByVal level As Integer)
@@ -24,7 +25,7 @@ Public Class DynamicContentTemplate
         Me.helperGridFroHeader.ID = "helpGrid" & (Me._level + 1)
 
 
-        Dim saveBut As Button = New Button()
+        saveBut = New Button()
         saveBut.Text = "Save"
         saveBut.Visible = True
         saveBut.Enabled = True
@@ -32,6 +33,7 @@ Public Class DynamicContentTemplate
         AddHandler saveBut.Click, AddressOf Me.saveButClick
 
         Dim mainPanel As Panel = New Panel()
+        mainPanel.ID = "mainPanel" & Me._level
         Dim pan As Panel = New Panel()
         pan.Controls.Add(grid)
 
@@ -94,10 +96,32 @@ Public Class DynamicContentTemplate
     End Function
 
     Protected Sub saveButClick(ByVal sender As Object, ByVal e As EventArgs)
-        Debug.WriteLine("Button was clicked")
-        Debug.WriteLine(Me._gfx(Me._level).prim_key)
+        
 
-        Debug.WriteLine(helperGridFroHeader.Rows(0).Cells(Me.getColumnIndexByName(helperGridFroHeader.Rows(0), Me._gfx(Me._level).prim_key)).Text)
+        Dim parentContainer As Control
+        Dim mainPanelOnParent As Panel
+        Dim tabContainerOnMainPanel As AjaxControlToolkit.TabContainer
+        Dim myHeaderTabInTabPanel As AjaxControlToolkit.TabPanel
+        Dim headerGridToFind As GridView
+
+        parentContainer = CType(sender, Button).Parent
+        If Not parentContainer Is Nothing Then
+            mainPanelOnParent = CType(parentContainer.FindControl(("mainPanel" & Me._level)), Panel)
+            If Not mainPanelOnParent Is Nothing Then
+                tabContainerOnMainPanel = CType(mainPanelOnParent.FindControl("tabContainerId"), AjaxControlToolkit.TabContainer)
+                If Not tabContainerOnMainPanel Is Nothing Then
+                    myHeaderTabInTabPanel = CType(tabContainerOnMainPanel.FindControl("headerId"), AjaxControlToolkit.TabPanel)
+                    If Not myHeaderTabInTabPanel Is Nothing Then
+                        headerGridToFind = CType(myHeaderTabInTabPanel.FindControl(("helpGrid" & (Me._level + 1))), GridView)
+                        If Not headerGridToFind Is Nothing Then
+                            Debug.WriteLine(headerGridToFind.Rows(0).Cells(Me.getColumnIndexByName(headerGridToFind.Rows(0), Me._gfx(Me._level).prim_key)).Text)
+                        End If
+                    End If
+                End If
+            End If
+
+        End If
+
     End Sub
 
     Public Function getColumnIndexByName(ByVal row As GridViewRow, ByVal columnName As String) As Integer
